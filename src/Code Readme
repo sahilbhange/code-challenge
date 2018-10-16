@@ -1,0 +1,50 @@
+Performance:
+Use generator or iterator to read the new events in case input events are in millions, it will avoid the in-memry loading of input file and will give better performance.
+Since the events are being stored in-memory, with large numner of customers, events database size will grow. If the new events file is large, both input file and existing events can cause memory contention issue.
+
+Sample code to read file using iterator:
+'''
+#Process the large file line by line using the file's returned iterator or generator
+
+try:
+    with open(input_file) as data_file:
+        while True:
+            event_data = json.load(data_file)
+            topXltv.ingest(event_data, D)
+except (IOError, OSError):
+    print("Error opening / processing file")
+except StopIteration:
+    pass
+'''	
+References: 
+http://stupidpythonideas.blogspot.com/2014/07/three-ways-to-read-files.html
+https://www.blog.pythonlibrary.org/2014/01/27/python-201-an-intro-to-generators/
+
+Week Calculation - First time interaction of customer will also be considered in the LTV calculation of the customer.
+
+Duplicate events:
+Duplicate events (i.e. row level duplicate) are handled for order on order_id however, site visit count would be wrong if duplicate rows are inserted in the input file. Thus input file should not contain row level duplicates.
+
+Customer order, city and address history in not stored in the database. We can achieve this by adding the updated events as new events and exclude the old records from the calculation.
+
+Run Script guidelines:
+
+Script take 3 parameters as an input
+
+Parameter 1 - Input file
+Parameter 2 - Output file
+Parameter 3 - Top X customers required
+
+If any if the parameter is not given, script will show below handler message
+Provide the apropriate number of parameters to scrpit like {python src/main.py input/events.txt output/events_output.txt 3}
+
+How to run:
+python src/main.py input/events.txt output/events_output.txt 3
+
+Test Cases:
+
+1. Customer attributes updated  
+--> python src/main.py input/cust_update.txt output/cust_update_output.txt 2
+
+2. Customer order update (order_id = 68d84e5d1a44)
+--> python src/main.py input/order_update.txt output/order_update_output.txt 2
