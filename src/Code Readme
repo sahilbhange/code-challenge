@@ -1,6 +1,8 @@
 Performance:
-Use generator or iterator to read the new events in case input events are in millions, it will avoid the in-memry loading of input file and will give better performance.
-Since the events are being stored in-memory, with large numner of customers, events database size will grow. If the new events file is large, both input file and existing events can cause memory contention issue.
+Use generator or iterator to read the new events in case input events are in millions, it will avoid the in-memry loading of input file 
+and will give better performance.
+Since the events are being stored in-memory, with large numner of customers, events database size will grow. If the new events file is 
+large, both input file and existing events can cause memory contention issue.
 
 Sample code to read file using iterator:
 '''
@@ -23,9 +25,11 @@ https://www.blog.pythonlibrary.org/2014/01/27/python-201-an-intro-to-generators/
 Week Calculation - First time interaction of customer will also be considered in the LTV calculation of the customer.
 
 Duplicate events:
-Duplicate events (i.e. row level duplicate) are handled for order on order_id however, site visit count would be wrong if duplicate rows are inserted in the input file. Thus input file should not contain row level duplicates.
+Duplicate events (i.e. row level duplicate) are handled for order on order_id however, site visit count would be wrong if duplicate 
+rows are inserted in the input file. Thus input file should not contain row level duplicates.
 
-Customer order, city and address history in not stored in the database. We can achieve this by adding the updated events as new events and exclude the old records from the calculation.
+Customer order, city and address history in not stored in the database. We can achieve this by adding the updated events as new events 
+and exclude the old records from the calculation.
 
 Run Script guidelines:
 
